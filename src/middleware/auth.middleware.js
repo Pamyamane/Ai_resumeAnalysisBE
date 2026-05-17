@@ -16,7 +16,7 @@ const BlacklistToken = require("../models/blacklist.model");
     }
     if (token) {
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, 8329980098);
             req.user = decoded;
             next();
         } catch (err) {

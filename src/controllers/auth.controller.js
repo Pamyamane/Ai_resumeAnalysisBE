@@ -22,7 +22,7 @@ const registerUsercontroller = async (req, res) => {
     password: hashedpassword,
   });
 
-  const token = jwt.sign({ userId: newuser._id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ userId: newuser._id }, 832998009, {
     expiresIn: "1d",
   });
 
