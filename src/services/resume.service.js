@@ -1,4 +1,4 @@
-const { PDFParse } = require("pdf-parse");
+const pdfParse = require("pdf-parse-fork");
 
 const skillDictionary = [
   "javascript",

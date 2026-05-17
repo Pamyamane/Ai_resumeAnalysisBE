@@ -1,5 +1,5 @@
-const puppeteer = require("puppeteer");
-
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium");
 function escapeHtml(value = "") {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -63,10 +63,11 @@ function resumeHtml(atsResume) {
 }
 
 async function createResumePdf(atsResume) {
-  const browser = await puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+const browser = await puppeteer.launch({
+  args: chromium.args,
+  executablePath: await chromium.executablePath(),
+  headless: chromium.headless,
+});
 
   try {
     const page = await browser.newPage();
