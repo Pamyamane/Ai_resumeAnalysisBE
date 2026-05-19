@@ -1,7 +1,13 @@
 const express = require ('express');
 
 const { authMiddleware } = require('../middleware/auth.middleware');
-const { registerUsercontroller  , loginUsercontroller , logoutUsercontroller , googlelogincontroller ,loginedinUsercontroller} = require('../controllers/auth.controller');   
+const { 
+  registerUsercontroller,
+  loginUsercontroller,
+  logoutUsercontroller,
+  googlelogincontroller,
+  loginedinUsercontroller
+} = require('../controllers/auth.controller');   
 const Authrouter = express.Router();
 
 
