@@ -86,9 +86,60 @@ const loginedinUsercontroller = async (req, res) => {
   }
 };
 
+const googlelogincontroller = async (req, res) => {
+  try {
+    const { code } = req.query;
+
+    const googleResponse = await oauth2client.getToken(code);
+
+    oauth2client.setCredentials(googleResponse.tokens);
+
+    const oauth2 = google.oauth2({
+      auth: oauth2client,
+      version: "v2",
+    });
+
+    const userInfo = await oauth2.userinfo.get();
+
+    const { email, name } = userInfo.data;
+
+    let user = await usermodel.findOne({ email });
+
+    if (!user) {
+      user = await usermodel.create({
+        username: name,
+        email,
+        password: "",
+      });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.status(200).json({
+      message: "Google login success",
+      token,
+      user,
+    });
+
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      message: "Google login failed",
+    });
+  }
+};
+
+
+
 module.exports = {
   registerUsercontroller,
   loginUsercontroller,
   logoutUsercontroller,
   loginedinUsercontroller,
+  googlelogincontroller
 };

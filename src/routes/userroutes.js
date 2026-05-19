@@ -1,12 +1,15 @@
 const express = require ('express');
 
 const { authMiddleware } = require('../middleware/auth.middleware');
-const { registerUsercontroller  , loginUsercontroller ,logoutUsercontroller ,loginedinUsercontroller} = require('../controllers/auth.controller');   
+const { registerUsercontroller  , loginUsercontroller , googlelogincontroller ,loginedinUsercontroller} = require('../controllers/auth.controller');   
 const Authrouter = express.Router();
 
 
 
 Authrouter.post("/register", (registerUsercontroller) );
+
+
+Authrouter.get("/google/callback", googlelogincontroller);
 
 Authrouter.post("/login",(loginUsercontroller));
 
