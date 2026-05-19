@@ -9,6 +9,9 @@ const cookieOptions = {
   secure: true,
   sameSite: "none", // required for cross-origin requests
 };
+const { google } = require("googleapis");
+const oauth2client = require("../utils/google.config");
+
 
 const registerUsercontroller = async (req, res) => {
   const { username, email, password } = req.body;
