@@ -94,26 +94,15 @@ const googlelogincontroller = async (req, res) => {
     const { code } = req.query;
 
     const googleResponse = await oauth2client.getToken(code);
-
     oauth2client.setCredentials(googleResponse.tokens);
 
-    const oauth2 = google.oauth2({
-      auth: oauth2client,
-      version: "v2",
-    });
-
+    const oauth2 = google.oauth2({ auth: oauth2client, version: "v2" });
     const userInfo = await oauth2.userinfo.get();
-
     const { email, name } = userInfo.data;
 
     let user = await usermodel.findOne({ email });
-
     if (!user) {
-      user = await usermodel.create({
-        username: name,
-        email,
-        password: "",
-      });
+      user = await usermodel.create({ username: name, email, password: "" });
     }
 
     const token = jwt.sign(
@@ -122,21 +111,14 @@ const googlelogincontroller = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.status(200).json({
-      message: "Google login success",
-      token,
-      user,
-    });
+    // Redirect to frontend with token in URL
+    res.redirect(`https://ai-resume-analysis-fe.vercel.app/auth/google/success?token=${token}`);
 
   } catch (err) {
     console.log(err);
-
-    res.status(500).json({
-      message: "Google login failed",
-    });
+    res.redirect(`https://ai-resume-analysis-fe.vercel.app/auth/google/error`);
   }
 };
-
 
 
 module.exports = {
